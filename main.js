@@ -45,4 +45,3 @@
 
     contenedor.save({ title: 'Producto 1', price: 100 })
         .then(id => console.log(id));
-    .catch(error => console.log(error));
