@@ -17,7 +17,7 @@
 
                 await fs.promises.writeFile(this.file, JSON.stringify(fileParsed));
 
-                return
+                return objeto.id
 
             } catch (error) {
                 console.log(error)
@@ -32,16 +32,77 @@
 
                 let objetoId = fileParsed.find(producto => producto.id == id ? producto : null);
 
+                return objetoId;
+
             } catch (error) {
                 console.log(error)
             }
         }
 
         async getAll() {
+            try {
+                let fileRead = await fs.promises.readFile(this.file, 'utf-8');
+                let fileParsed = JSON.parse(fileRead);
 
+                return fileParsed;
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        async deleteById(id) {
+            {
+                try {
+
+                    let fileRead = await fs.promises.readFile(this.file, 'utf-8');
+                    let fileParsed = JSON.parse(fileRead);
+
+                    fileParsed = fileParsed.filter(producto => producto.id != id ? producto : null);
+
+                    await fs.promises.writeFile(this.file, JSON.stringify(fileParsed));
+
+                    return fileParsed;
+
+                } catch (error) {
+                    console.log(error)
+                }
+
+
+            }
+        }
+
+        async deleteAll() {
+            try {
+                let fileRead = await fs.promises.readFile(this.file, 'utf-8');
+                let fileParsed = JSON.parse(fileRead);
+
+                fileParsed = [];
+
+                await fs.promises.writeFile(this.file, JSON.stringify(fileParsed));
+
+                return fileParsed;
+
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
     const contenedor = new Contenedor('productos.txt');
 
     contenedor.save({ title: 'Producto 1', price: 100 })
         .then(id => console.log(id));
+
+
+    contenedor.getById(1)
+        .then(producto => console.log(producto))
+
+    contenedor.getAll()
+        .then(productos => console.log(productos))
+
+    contenedor.deleteById(3)
+        .then(productos => console.log(productos));
+
+
+    contenedor.deleteAll()
+        .then(productos => console.log(productos));
