@@ -1,6 +1,6 @@
     const fs = require('fs');
 
-    class Contenedor {
+class Contenedor {
 
         constructor(file) {
             this.file = file
@@ -44,7 +44,7 @@
                 let fileRead = await fs.promises.readFile(this.file, 'utf-8');
                 let fileParsed = JSON.parse(fileRead);
 
-                return fileParsed;
+                    return fileParsed;
 
             } catch (error) {
                 console.log(error)
@@ -88,21 +88,5 @@
             }
         }
     }
-    const contenedor = new Contenedor('productos.txt');
 
-    contenedor.save({ title: 'Producto 1', price: 100 })
-        .then(id => console.log(id));
-
-
-    contenedor.getById(1)
-        .then(producto => console.log(producto))
-
-    contenedor.getAll()
-        .then(productos => console.log(productos))
-
-    contenedor.deleteById(3)
-        .then(productos => console.log(productos));
-
-
-    contenedor.deleteAll()
-        .then(productos => console.log(productos));
+module.exports = Contenedor;
