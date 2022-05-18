@@ -3,18 +3,6 @@ const router = Router();
 
 // Array de Productos
 let productos = [
-    {
-        id: 1,
-        name: 'Producto 1',
-        price: 100,
-        description: 'Descripcion del producto 1'
-    },
-    {
-        id: 2,
-        name: 'Producto 2',
-        price: 200,
-        description: 'Descripcion del producto 3'
-    }
 ]
 
 
@@ -30,29 +18,37 @@ class Product {
     }
 }
 
-
+const produId = productos > 0 ? productos[productos.length - 1].id + 1 : 1;
 
 // Rutas
 router.get('/',(req,res)=>{
-    res.json(productos)
+    res.render('listasProductos',{
+        productos: productos
+    })
 });
 
-router.post('/', (req, res) => {
+router.get('/ingresoProductos',(req,res)=>{
+    res.render('ingresoProductos',{})   
+})
+
+router.post('/ingresoProductos', (req, res) => {
     let nuevoProdu = {};
-    nuevoProdu = new Product();
+    
+        nuevoProdu = new  Product(
+        produId,
+        req.body.name,
+        req.body.price,
+        req.body.description
+        );
 
-    nuevoProdu.id = productos[productos.length-1].id + 1;
-    nuevoProdu.name = req.body.name;
-    nuevoProdu.description = req.body.description;
-    nuevoProdu.price = req.body.price;
 
+    console.log(nuevoProdu.length)
     productos.push(nuevoProdu);
-
-    res.json(nuevoProdu);
+    res.render('ingresoProductos',{})
 });
 
 
-router.get('/:id', (req, res) => {
+router.get('/productos/:id', (req, res) => {
     const {id} = req.params;
     let produId =  productos.find(producto => producto.id == id);
     
@@ -60,7 +56,7 @@ router.get('/:id', (req, res) => {
 
 })
 
-router.put('/:id',(req,res)=>{
+router.put('/productos/:id',(req,res)=>{
     const {id} = req.params;
     let produId =  productos.find(producto => producto.id == id);
     
@@ -71,7 +67,7 @@ router.put('/:id',(req,res)=>{
     res.json(produId);
 });
 
-router.delete('/:id',(req,res)=>{
+router.delete('/productos/:id',(req,res)=>{
     let newArray = [];
     const {id} = req.params;
     newArray = productos.filter(producto => producto.id != id);
