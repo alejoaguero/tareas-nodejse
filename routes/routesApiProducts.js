@@ -1,16 +1,18 @@
-const {Router} = require('express');
+/*const {Router} = require('express');
 const router = Router();
 
+
+
+
 // Array de Productos
-let productos = [
-]
+let productos = []
 
 
 
 // Clase de Producto
 
 class Product {
-    constructor(id,name,price,description,image){
+    constructor(id,name,price,description){
         this.id = id;
         this.name = name;
         this.price = price;
@@ -26,12 +28,7 @@ router.get('/',(req,res)=>{
         productos: productos
     })
 });
-
-router.get('/ingresoProductos',(req,res)=>{
-    res.render('ingresoProductos',{})   
-})
-
-router.post('/ingresoProductos', (req, res) => {
+router.post('/', (req, res) => {
     let nuevoProdu = {};
     
         nuevoProdu = new  Product(
@@ -42,9 +39,10 @@ router.post('/ingresoProductos', (req, res) => {
         );
 
 
-    console.log(nuevoProdu.length)
+    console.log(nuevoProdu)
     productos.push(nuevoProdu);
-    res.render('ingresoProductos',{})
+
+    res.redirect('/');
 });
 
 
@@ -79,3 +77,4 @@ router.delete('/productos/:id',(req,res)=>{
 
 module.exports = router;
 
+*/
