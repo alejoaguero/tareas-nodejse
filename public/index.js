@@ -39,7 +39,7 @@ sendMessage.addEventListener('click', () => {
     const messageIntro = document.getElementById('inputMessage')
     const email = document.getElementById('inputEmail')
     
-    if(messageIntro.value !== '' || email.value !== ''){
+    if(messageIntro.value !== '' && email.value !== ''){
         message = {
             mensaje: messageIntro.value,
             email: email.value
@@ -48,6 +48,7 @@ sendMessage.addEventListener('click', () => {
     socket.emit('new-message', message)
     }
 
+
 })
 
 socket.on('messages', (data) => {
@@ -55,7 +56,7 @@ socket.on('messages', (data) => {
     const hora = new Date().toLocaleTimeString()
 
     messagesChat.innerHTML = data.map((message) => {
-            return(`<p>${message.email} [${fecha} - [${hora}]: ${message.mensaje}</p>`)
+            return(`<p>${message.email} [${fecha}] - [${hora}]: ${message.mensaje}</p>`)
     }).join(' ')
 })
 

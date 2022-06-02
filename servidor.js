@@ -1,23 +1,7 @@
 const express = require('express');
-const app = express();
 const morgan = require('morgan');
-
-const http = require('http');
-const httpServer = http.createServer(app);
-const {Server: ioServer} = require('socket.io');
-const io = new ioServer(httpServer);
-
-const productos = []
-const message = []
-
-
+const app = express();
 const PORT = 8080;
-
-
-httpServer.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-})
-
 
 
 app.use(morgan('dev'));
@@ -31,23 +15,9 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 
-io.on('connection', (socket) => { 
-    socket.emit('productos', productos)
-    socket.emit('messages', message)
-    socket.on('new-produ', (data) => {
-        productos.push(data)
-    })
+app.use('/api/carrito', require('./routes/routeCart'));
+app.use('/api/productos', require('./routes/routeProducts'));
 
-    socket.on('new-message', (data) => {
-        message.push(data)
-    })
-
-    io.sockets.emit('productos', productos)
-    io.sockets.emit('messages', message)
-})
-
-
-
-app.get('/', (req, res) => {
-    res.render('index', {productos:productos})
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 })
