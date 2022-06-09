@@ -3,14 +3,14 @@ const fs = require('fs');
 class Api{
 
     constructor(urlDB){
-        this.urlDB = __dirname + urlDB;
+        this.urlDB =  urlDB;
     }
 
     async getAll(){
         try {
-            const datas = await fs.promises.readFile(this.urlDB, 'utf-8');
-
-            return datas;
+            const datas = await fs.promises.readFile(this.urlDB, 'utf-8');    
+            
+            return JSON.parse(datas);
 
         } catch (error) {
             throw new Error(`Error: ${error}`);
@@ -19,12 +19,18 @@ class Api{
     
     async getOne(id){
          try {
-             const datas = await this.getAll();
-  
-                return datas.find(item => item.id === id);
-            
-         } catch (error) {  
+            const datas = await this.getAll();
+            const index = datas.findIndex(item => item.id === id);
 
+            if(index !== -1){
+
+                return datas[index];
+            }
+                else{
+                    throw  new Error(`Error: No se encontro el id: ${id}`);
+                }
+
+         } catch (error) {
             throw new Error(`Error: ${error}`);
          }
     }
@@ -32,14 +38,16 @@ class Api{
     async create(obj){
         try {
             const datas = await this.getAll();
-            const newId = datas[datas.length-1].id + 1;
+            datas.length > 0 ? obj.id = parseInt(datas[datas.length - 1].id) + 1 : obj.id = 1;
+            const timestamp = Date.now();
+            datas.push({...obj, timestamp});
 
-            datas.length == 0 ? obj.id = 1 : obj.id = newId;
-
-            datas.push(obj);
+            console.log(datas)
 
             await fs.promises.writeFile(this.urlDB, JSON.stringify(datas));
-            
+
+            return datas;
+
         } catch (error) {
             throw new Error(`Error al guardar: ${error}`);
         }
@@ -49,14 +57,14 @@ class Api{
         try {
             const datas = await this.getAll();
             const index = datas.findIndex(item => item.id === id);
-    
-            if(dataID){
+            
+            if(index !== -1){   
 
-                datas[index].nombre = obj.nombre;
-                datas[index].descripcion = obj.descripcion;
-                datas[index].precio = obj.precio;
-                datas[index].stock = obj.stock;
-                datas[index].codigo = obj.codigo;
+                datas[index].nombre = obj.nombre ? obj.nombre : datas[index].nombre;
+                datas[index].descripcion = obj.descripcion ? obj.descripcion : datas[index].descripcion;
+                datas[index].precio = obj.precio ? obj.precio : datas[index].precio;
+                datas[index].stock = obj.stock ? obj.stock : datas[index].stock;
+                datas[index].codigo = obj.codigo ? obj.codigo : datas[index].codigo;
             }
                 else{
                     throw new Error(`Error: No se encontro el id: ${id}`);
@@ -77,7 +85,7 @@ class Api{
     async delete(id){
         try {
             const datas = await this.getAll();
-            const index = datas.findIndex(item => item.id === id);    
+            const index = datas.findIndex(item => item.id === id);
             
             datas.splice(index,1);
             

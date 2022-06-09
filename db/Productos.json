@@ -1,6 +1,1 @@
-[
-    {
-        "id":"1",
-        "name":"box1"
-    }
-]
+[{"id":1,"timestamp":"1654489176336","nombre":"Caja","descripcion":"Caja de la empresa","codigo":"RK-002","foto":"https://www.cajacolombia.com/wp-content/uploads/2019/01/caja-colombia-logo.png","precio":15,"stock":100}]
