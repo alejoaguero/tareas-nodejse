@@ -21,7 +21,7 @@ class Carro{
         try {
             const cart = await this.getAllCart();
 
-            const cartId = cart.filter(cart => cart.id === id);
+            const cartId = cart.filter(cart => cart.id === parseInt(id)); 
 
             return cartId;
 
@@ -32,16 +32,17 @@ class Carro{
 
     async deleteProduct(id,idProdu){
         const cart = await this.getAllCart();
+
+        const cartProdu = cart.find(cart => cart.id === parseInt(id));
         const index = cart.findIndex(cart => cart.id === parseInt(id));
-        const cartId = cart.filter(cart => cart.id === parseInt(id));
 
-        cartId.productos = cartId.productos.filter(producto => producto.id !== parseInt(idProdu));
+        cartProdu.productos = cartProdu.productos.filter(producto => producto.id !== parseInt(idProdu));
 
-        cart[index] = cartId;
+        cart[index] = cartProdu;
 
         await fs.promises.writeFile(this.urlDB,JSON.stringify(cart));   
 
-        return cartId;
+        return cart[index];
 
     }
 
@@ -90,7 +91,7 @@ class Carro{
                 const cart = await this.getAllCart()
                    
                 
-                cart = cart.filter(cart => cart.id !== id);
+                cart = cart.filter(cart => cart.id !== parseInt(id));
 
                 await fs.promises.writeFile(this.urlDB,JSON.stringify(cart));
 
