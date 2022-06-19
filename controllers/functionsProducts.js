@@ -2,8 +2,8 @@ const fs = require('fs');
 
 class Api{
 
-    constructor(urlDB){
-        this.urlDB =  urlDB;
+    constructor(connection){
+        this.connection =  connection;
     }
 
     async getAll(){
@@ -37,16 +37,12 @@ class Api{
 
     async create(obj){
         try {
-            const datas = await this.getAll();
-            datas.length > 0 ? obj.id = parseInt(datas[datas.length - 1].id) + 1 : obj.id = 1;
-            const timestamp = Date.now();
-            datas.push({...obj, timestamp});
-
-            console.log(datas)
-
-            await fs.promises.writeFile(this.urlDB, JSON.stringify(datas));
-
-            return datas;
+            knex(options).table('productos').insert
+                .then(data => {
+                })
+                .catch(err => {
+                    throw new Error(`Error al crear: ${err}`);
+                })
 
         } catch (error) {
             throw new Error(`Error al guardar: ${error}`);
