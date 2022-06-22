@@ -1,4 +1,4 @@
-const { options } = require('./options/configDB.js');
+const { options,options2 } = require('./options/configDB.js');
 const knex = require('knex');
 
 const express = require('express');
@@ -11,7 +11,7 @@ const io = new Server(server);
 
 const ApiClass = require('./apiClass.js');
 const api = new ApiClass(knex, 'productos');
-
+const db = knex(options2);
 
 const PORT= 3000;
 
@@ -32,16 +32,66 @@ app.get('/', (req, res) => {
 
 
 
+
+/* 
+db.schema.createTable('message', (table) => {
+    table.increments('id').primary();
+    table.string('message');
+    table.string('date')
+    table.string('email')
+})  
+    .then(() => console.log('Tabla creada'))
+    .catch(err=> console.log(err))
+ */
+db.from('message').select('*')
+    .then(data => console.log(data))
+    .catch(err=> console.log(err))
+
+
 io.on('connection', (socket) => {
+   
+    // emitiendo productos
+    api.getAll()
+        .then((data) => socket.emit('all-products', data))
+        .catch((error) => console.log(error))
+    
+    //emitiendo messages
+    db.from('message').select('*')
+        .then(data => socket.emit('all-messages',data))
+        .catch(err=> console.log(err))
+
+
+    //recibiendo un producto nuevo 
     socket.on('new-produ', (data) => {
         api.create(data)
-            .then(data => {
-                socket.emit('productos', data)
-                console.log(data)
-            }) 
+        .then(() => {
+            console.log('Se guardo el producto')
+        })
+        .catch(err=> console.log(err))
+        
+
+        api.getAll()
+            .then((data) => io.sockets.emit('all-products', data))
+            .catch((error) => console.log(error))   
+    })  
+
+    //recibiendo nuevos mensajes
+    socket.on('new-message',(data)=>{
+        db.from('message').insert(data)
+            .then(data => console.log(data))
             .catch(err => console.log(err))
-    })   
+
+    db.from('message').select('*')
+        .then(data => io.sockets.emit('all-messages',data))
+        .catch(err=> console.log(err))
+
+    })
+
+    
+    
 })
+
+
 
 server.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

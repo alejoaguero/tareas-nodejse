@@ -10,12 +10,11 @@ class ApiClass{
 
     async getAll(){
         try {
-            this.knex.select('*').from(this.table)
-                .then(data => { 
-                    return data
-                })
-                .catch(err => console.log(err))
-                    
+            const elementos =  this.knex.from(this.table).select('*')
+            
+            return elementos;
+
+
         } catch (error) {
             throw new Error(`Error: ${error}`);
         }
@@ -23,34 +22,21 @@ class ApiClass{
     
     async getOne(id){
          try {
-            this.knex.select('*').from(this.table)
-                .where('id', id)
-                .then(data => {
-                    return data
-                })
-                .catch(err => console.log(err))
+            const element = await this.knex.from(this.table).select('*').where('id', id)
 
+
+                return element
          } catch (error) {
             throw new Error(`Error: ${error}`);
          }
     }   
 
     async create(obj){
-        console.log(obj)
         try {
             
-            await this.knex.table(this.table).insert({
-                
-                name: obj.name,
-                price: obj.price,
-                description: obj.description
+            const newElement =  await this.knex.table(this.table).insert(obj)
 
-            })
-
-
-            const productos = await this.getAll();
-            
-            return productos;
+            return newElement;
 
         } catch (error) {
             throw new Error(`Error al guardar: ${error}`);
@@ -60,14 +46,11 @@ class ApiClass{
 
     async delete(id){
         try {
-            this.knex.table(this.table).where('id', id).del()
-            .then(data => {
-                return data
-            })
-            .catch(err => {
-                throw new Error(`Error al eliminar: ${err}`);
-            })
 
+            const elementDelete = await this.knex.from(this.table).where('id', id).del()
+
+            return elementDelete;
+            
         } catch (error) {
             throw new Error(`Error al eliminar: ${error}`);
         }
@@ -75,13 +58,7 @@ class ApiClass{
 
     async deleteAll(){
         try {
-            this.knex.table(this.table).del()
-            .then(data => {
-                return data
-            })
-            .catch(err => {
-                throw new Error(`Error al eliminar: ${err}`);
-            })
+            const elementsDeletes = await this.knex.from(this.table).del()
 
         } catch (error) {
             throw new Error(`Error al eliminar: ${error}`);
