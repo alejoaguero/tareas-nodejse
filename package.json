@@ -2,35 +2,50 @@
   "name": "coder-node",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node servidor.js",
-    "dev": "nodemon servidorWebSocket.js",
-    "build": "webpack"
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./cookie-session-storage/serverCookie.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alejoaguero/tareas-nodejse.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alejoaguero/tareas-nodejse/issues"
+  },
+  "homepage": "https://github.com/alejoaguero/tareas-nodejse#readme",
   "dependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.18.0",
-    "@babel/preset-env": "^7.18.0",
+    "@babel/cli": "^7.18.9",
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
-    "express": "^4.17.3",
-    "knex": "^2.1.0",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "firebase": "^9.9.1",
+    "firebase-admin": "^11.0.0",
+    "knex": "^2.2.0",
+    "mongoose": "^6.4.6",
     "morgan": "^1.10.0",
-    "multer": "^1.4.4",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
-    "pug": "^3.0.2",
+    "nodemon": "^2.0.19",
+    "normalizr": "^3.6.2",
+    "session-file-store": "^1.5.0",
     "socket.io": "^4.5.1",
-    "sqlite3": "^5.0.8",
-    "typescript": "^4.7.2"
+    "sqlite3": "^5.0.10",
+    "typescript": "^4.7.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
+    "@faker-js/faker": "^7.3.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
   }
 }

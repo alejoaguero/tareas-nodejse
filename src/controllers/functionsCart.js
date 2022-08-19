@@ -1,4 +1,4 @@
-const fs = require('fs');
+import { promises } from 'fs';
 
 
 class Carro{
@@ -8,7 +8,7 @@ class Carro{
 
     async getAllCart(){
         try {
-            const cart = await fs.promises.readFile(this.urlDB, 'utf-8');
+            const cart = await promises.readFile(this.urlDB, 'utf-8');
 
             return JSON.parse(cart);
 
@@ -40,7 +40,7 @@ class Carro{
 
         cart[index] = cartProdu;
 
-        await fs.promises.writeFile(this.urlDB,JSON.stringify(cart));   
+        await promises.writeFile(this.urlDB,JSON.stringify(cart));   
 
         return cart[index];
 
@@ -51,7 +51,7 @@ class Carro{
             const cart = await this.getAllCart();
 
             
-            const producto = await fs.promises.readFile('C:/Users/alejo/OneDrive/Documentos/Alejo/Paginas/nodejs/coder-node/db/Productos.json', 'utf-8');
+            const producto = await promises.readFile('C:/Users/alejo/OneDrive/Documentos/Alejo/Paginas/nodejs/coder-node/db/Productos.json', 'utf-8');
             const productos = JSON.parse(producto);
             const findProduct = productos.find(producto => producto.id === prodId.id);
 
@@ -60,7 +60,7 @@ class Carro{
             cart[index].productos.push({...findProduct});
                 
 
-            await fs.promises.writeFile(this.urlDB,JSON.stringify(cart));
+            await promises.writeFile(this.urlDB,JSON.stringify(cart));
 
             return cart[index];
 
@@ -77,7 +77,7 @@ class Carro{
             
             cart.push({...obj,id,timestamp});
 
-            await fs.promises.writeFile(this.urlDB,JSON.stringify(cart));
+            await promises.writeFile(this.urlDB,JSON.stringify(cart));
 
                 return cart;
 
@@ -93,7 +93,7 @@ class Carro{
                 
                 cart = cart.filter(cart => cart.id !== parseInt(id));
 
-                await fs.promises.writeFile(this.urlDB,JSON.stringify(cart));
+                await promises.writeFile(this.urlDB,JSON.stringify(cart));
 
                 return cartFiltered;
 
@@ -103,4 +103,4 @@ class Carro{
     }
 }
 
-module.exports = Carro;
+export default Carro;
