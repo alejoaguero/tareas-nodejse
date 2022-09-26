@@ -13,7 +13,6 @@ export class MongoClass  {
     }
 
 
-
     async getAll() {
         try {
 
@@ -29,6 +28,8 @@ export class MongoClass  {
 
     async getOne(id) {
         try {
+            console.log(id)
+
             const user =  await this.collection.findById(id);
             
             return user;
@@ -40,7 +41,6 @@ export class MongoClass  {
 
     async create(doc) {
         try {
-            console.log(doc);
             const usersNew =  await this.collection.create(doc);
 
             return usersNew;
@@ -52,9 +52,7 @@ export class MongoClass  {
 
     async update(id, doc) {
         try {
-            const user =  await this.collection.findOneAndUpdate({
-                id
-            }, doc);
+            const user =  await this.collection.findByIdAndUpdate(id, doc);
 
             return await this.collection.findById(id);
 
@@ -64,13 +62,9 @@ export class MongoClass  {
     }
     async delete(id) {
         try {
-            await this.collection.deleteOne({
-                id
-            })
+            await this.collection.deleteOne({id})
 
-            const products = await this.getAll();
-
-            return products;
+            return await this.getAll();
 
         } catch (error) {
             throw new Error('Error : ', error);

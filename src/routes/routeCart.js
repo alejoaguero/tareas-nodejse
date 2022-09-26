@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', (req, res) => {
     cartDao
     .then((products) => {
-        products.getAll()
+        products.GetAllCart()
             .then((products) => {
                 console.log(products);
                 res.json(products);
@@ -29,9 +29,10 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+    const {cant,producto} = req.body;
     cartDao
         .then((products) => {
-            products.create(req.body)
+            products.CreateProduCart(cant,producto)
                 .then((product) => {    
                     res.json(product);
                 })
@@ -40,7 +41,7 @@ router.post('/', (req, res) => {
         .catch((err) => console.log(err));
 })
 
-router.put('/', (req, res) => { 
+router.put('/:id', (req, res) => { 
     cartDao
         .then((products) => {
             products.update(req.params.id,{cant: req.body.cant})

@@ -1,6 +1,5 @@
 import  {MongoClass}  from "../../contenedores/MongoClass.js";
 
-
 export class MongoDBProducts extends MongoClass {
     constructor() {
         super('products', { 

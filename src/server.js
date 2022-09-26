@@ -8,6 +8,8 @@ app.use(Morgan('dev'));
 app.use(express.json());    
 app.use(express.urlencoded({extended: true}));
 
+
+
 app.use('/products', routeProducts);
 app.use('/cart', routeCart);
 

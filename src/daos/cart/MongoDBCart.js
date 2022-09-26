@@ -1,14 +1,34 @@
+import mongoose from 'mongoose';
 import {MongoClass} from '../../contenedores/MongoClass.js';
- 
-export class MongoDBCart extends MongoClass{    
+
+export class MongoDBCart extends MongoClass{
+
     constructor(){
-        super('carts',{
-            idProd:{type:String, required:true, unique:true},
-            brand:{type:String,required:true},
-            description:{type:String,required:true},
-            price:{type:Number,required:true},
-            product:{type:String,required:true},
-            cant:{type:Number,required:true}
+        super('cart',{
+            cant:{type:Number,require:true},
+            producto:{type:mongoose.Types.ObjectId, unique:true}
         });
+    }
+
+    async GetAllCart(){
+        const cart = await this.collection.aggregate([
+            {
+                $lookup:{
+                    from:'products',
+                    localField:'producto',
+                    foreignField:'_id',
+                    as:'productsCart'
+                }
+            }
+        ])
+
+        return cart;
+    }
+
+    async CreateProduCart(cant,producto){
+
+        const produCart = await this.collection.create({cant,producto});
+
+        return produCart;
     }
 }
