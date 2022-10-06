@@ -16,15 +16,7 @@ export class functionChat {
                 avatar:{type:String,required:true},
                 email:{type:String,required:true}
             },
-            messages:{
-                name:{type:String,required:true},
-                surname:{type:String,required:true},
-                age:{type:Number,required:true},
-                alias:{type:String,required:true},
-                avatar:{type:String,required:true},
-                email:{type:String,required:true},
-                message: {type:String,required:true}
-            }
+            text: {type:String, required:true}
             
         })
     }
@@ -45,6 +37,7 @@ export class functionChat {
             const message = new this.collection(data)
 
             await message.save()
+
             return await this.getAll()
 
         } catch (error) {

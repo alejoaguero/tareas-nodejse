@@ -5,8 +5,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "start": "node ./cookie-session-storage/serverCookie.js",
+    "dev": "nodemon ./cookie-session-storage/serverCookie.js"
   },
   "repository": {
     "type": "git",

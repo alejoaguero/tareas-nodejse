@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import http from 'http';
 import datosMock from './datosMock.js';
 import { functionChat } from './controllers/functionChats.js';
-import  {datosNormalizr}  from './datosNormalized.js';
+import { normalized } from './datosNormalized.js';
 
 const chat = new functionChat();
 
@@ -33,7 +33,7 @@ app.get('/api/productos-test', (req, res) => {
     res.render('productos',{datosMock})
 })
 
-app.get('/', (req, res) => {
+app.get('/api/chat', (req, res) => {
     res.render(__dirname + '/views/chat')
 })
 
@@ -43,7 +43,8 @@ io.on('connection', (socket) => {
     chat.getAll()
         .then(chats => {
             socket.emit('chat', chats)
-            datosNormalizr(chats)
+
+            normalized(chats)
         })  
         .catch(error=> console.log(error))  
 

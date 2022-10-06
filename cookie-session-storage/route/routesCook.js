@@ -3,11 +3,13 @@ import datosMock from "../../Clase22-Normalizr/datosMock.js";
 
 const route = Router()
 
-
+// Ruta logueo 
 route.get("/login", (req, res) => {
     res.render('login');
 })
 
+
+// Ruta para guardar la cookie y redirigir a productos
 route.post("/login", (req, res) => {
     const {name,password} = req.body
 
@@ -18,29 +20,29 @@ route.post("/login", (req, res) => {
 })
 
 
-route.get('/productos', (req,res)=>{
+route.get('/productos',(req,res)=>{
     const user = {
         name:req.session.name,
         pass:req.session.password
     }
 
-            res.render('productos',{datosMock,user})
-        
-            if(req.body){
-                console.log(req.body)
-            }
+    if(req.session.name == undefined){
+        res.redirect('/login')
+    }else{
+        res.render('productos',{datosMock,user})
+    }
+
+
+
 })
-
-
 
 route.post('/logout',(req,res)=>{
-    req.session.destroy((err)=>{
-        if(err) throw err
-        res.redirect('/login')
-    })
+    const {name} = req.session
+
+    res.render('logout',{name})
+
+    console.log(req.body)
 })
-
-
 
 
 export default route;

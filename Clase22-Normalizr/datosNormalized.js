@@ -2,24 +2,28 @@ import {normalize,schema} from 'normalizr';
 import util from 'util';
 
 
-const schemaAuthor = new schema.Entity('autor',{},{idAttribute:'email'})
+
+
+const schemaAuthor = new schema.Entity('autor')
 const schemaMessage = new schema.Entity('message',{
-    message: schemaAuthor
+    text: schemaAuthor
 })
 
-
-const schemaChat = new schema.Entity('mensaje',{
+const schemaPost = new schema.Entity('post',{
     autor: schemaAuthor,
-    mensajes: [schemaMessage]
+    text: [schemaMessage]
 })
 
-const schemaMensajes = new schema.Entity('mensajes',{
-    id:'mensajes',
-    mensajes: [schemaMessage]
-},{idAttribute:'mensajes'})
+const schemaPosts = new schema.Entity('mensajes',{
+    mensajes:[schemaPost]
+})
 
-export  function datosNormalizr(mensaje){
-    const datosNormalized = normalize(mensaje,schemaMensajes);
 
-    console.log(util.inspect(datosNormalized,true,7,true))
-} 
+export function normalized(dataOriginal){
+    const dataNormalize = normalize(dataOriginal, schemaPosts)
+
+    console.log(JSON.stringify(dataOriginal).length)
+    console.log(JSON.stringify(dataNormalize).length)
+    console.log(util.inspect(dataOriginal,true,7,true))
+    console.log(util.inspect(dataNormalize,true,7,true))
+}
